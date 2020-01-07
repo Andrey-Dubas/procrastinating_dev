@@ -1,0 +1,13 @@
+#header {
+    /*
+    background: rgb(211, 211, 211);
+    height: 80px;
+    */
+    display: flex;
+    justify-content: center;
+}
+
+#website-name {
+    text-align: center;
+    vertical-align: middle;
+}

@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+    <head>  
+        <link href="/css/register.css" rel="stylesheet" type="text/css">
+        <link href="/css/header.css" rel="stylesheet" type="text/css">
+        <link href="/css/general.css" rel="stylesheet" type="text/css">
+        <link href="/css/navigation.css" rel="stylesheet" type="text/css">
+    </head>
+    <body>
+        <%- include('templates/header') %>
+        <%- include('templates/navigation') %>
+        <h2> <%= articleName %> </h2>
+        <div>
+            
+            <% 
+            if (typeof role !== 'undefined' && (role === 'admin' || username === articleOwner)) {
+               if (articleDirname) {
+            %>
+                <div>
+                <a href='/articles/edit/<%= articleDirname %>'> edit article </a>
+                </div>
+            <% }} %>
+
+            <%- include(fullArticlePath + '/index.html') %>
+        </div>
+    </body>
+</html>

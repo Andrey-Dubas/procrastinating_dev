@@ -1,0 +1,196 @@
+<!--
+<meta http-equiv="Content-Security-Policy" content="img-src *; script-src *; style-src *;">
+    -->
+<html>
+
+<head>
+    <title>create article</title>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css" rel="stylesheet" type="text/css">
+    <link href="style.css" rel="stylesheet" type="text/css">
+    <link href="/css/register.css" rel="stylesheet" type="text/css">
+    <link href="/css/header.css" rel="stylesheet" type="text/css">
+    <link href="/css/navigation.css" rel="stylesheet" type="text/css">
+    <link href="/css/PostEditor.css" rel="stylesheet" type="text/css">
+</head>
+
+<body>
+<!--<body class="container-fluid">-->
+    <%- include('templates/header') %>
+    <%- include('templates/navigation') %>
+    <div id="editor-container">
+    <ul id='inline-ul'>
+        tags: &emsp;
+        <li>
+            <input id="CurrentTag" type="text" onInput="currentTagOnEdit()">
+        </li>
+        <li>
+            <a id="tagRef"> <img src="/images/add_passive.png" id="addIcon" /> </a>
+        </li>
+    </ul>
+
+    <% if (article_name) {%>
+        name of the article: &emsp; <input id="article_name", name="article_name" type="text" value="<%= article_name%>"> </input>
+    <% } else { %>
+        name of the article: &emsp; <input id="article_name", name="article_name" type="text"> </input>
+    <% } %>
+
+    
+    <section class="row">
+        <textarea contentEditable="true" class="col-md-6 full-height"
+            id="markdownTextarea">
+                <% if (markdownContent) {%>
+                    <%= markdownContent %>
+                <% } else { %>
+                    Write your text here...
+                <% } %>
+        </textarea>
+        <div class="col-md-6 full-height" id="htmlViewer"></div>
+    </section>
+
+    <button type="button"
+        onClick='doPost(document.getElementById("article_name").value, document.getElementById("htmlViewer"))'>Push!!!!</button>
+    <script src="https://cdn.rawgit.com/showdownjs/showdown/1.1.0/dist/showdown.min.js"></script>
+    <script>
+
+        function addTag() {
+            let currentTagElement = document.getElementById("CurrentTag");
+            let ul = document.getElementById("inline-ul");
+
+            let newElementInput = document.createElement("input");
+            ul.insertBefore(newElementInput, ul.childNodes[ul.childNodes.length - 4]);
+
+            let fontSize = window.getComputedStyle(newElementInput, null)['font-size'];
+            newElementInput.style.width = ((newElementInput.value.length + 3) * fontSize.slice(0, fontSize.length - 2)) + 'px';
+            newElementInput.readOnly = true;
+            newElementInput.value = currentTagElement.value;
+
+            currentTagElement.value = "";
+
+            let newElementImg   = document.createElement("img");
+            ul.insertBefore(newElementImg, ul.childNodes[ul.childNodes.length - 4]);
+            newElementImg.src = "/images/remove_active.png";
+            newElementImg.onclick = function() {
+                ul.removeChild(newElementImg);
+                ul.removeChild(newElementInput);
+            };
+        }
+
+        function currentTagOnEdit() {
+            console.log("currentTagOnEdit click");
+            let currentTagElement = document.getElementById("CurrentTag");
+            let tagHref = document.getElementById("tagRef");
+            currentTagElement.style.width = ((currentTagElement.value.length + 3) * 10) + 'px';
+
+            let addIconElement = document.getElementById("addIcon");
+            if (currentTagElement.value.length === 0) {
+                console.log("set passive");
+                addIconElement.src = "/images/add_passive.png";
+                tagHref.removeAttribute("href");
+            }
+            else {
+                console.log("set active");
+                addIconElement.src = "/images/add_active.png";
+                tagHref.href = "javascript:addTag()";
+            }
+        }
+
+        function doPost(article_name, content) { }
+
+        window.onload = (ent) => {
+            let addImg = document.getElementById("addIcon");
+
+            addImg.style.position = "absolute";
+
+            let imagesAdded = [];
+            var markdownTextarea = document.getElementById('markdownTextarea');
+            console.log(markdownTextarea);
+
+            markdownTextarea.ondragover = (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                evt.dataTransfer.dropEffect = 'copy';
+                return true;
+            }
+
+
+            markdownTextarea.ondrop = (evt) => {
+                evt.preventDefault();
+                evt.stopPropagation();
+                console.log("drop")
+                if (evt.dataTransfer.files.length === 1) {
+                    console.log(evt.dataTransfer.files[0].type);
+
+                    var formdata = new FormData();
+                    formdata.append('imageFile', evt.dataTransfer.files[0]);
+
+                    var img = document.createElement('img');
+
+                    let imgURL = window.URL.createObjectURL(evt.dataTransfer.files[0]);
+                    img.src = imgURL;
+                    let pos = markdownTextarea.selectionStart;
+                    markdownTextarea.value = markdownTextarea.value.slice(0, pos) + '\n![' + evt.dataTransfer.files[0].name + '](' + imgURL + ')\n' + markdownTextarea.value.slice(pos);
+
+                    imagesAdded.push(evt.dataTransfer.files[0]);
+
+                    htmlViewer.innerHTML = convertTextAreaToMarkdown({}, markdownTextarea.value, converter);
+                }
+            }
+
+            var converter = new showdown.Converter({ parseImgDimensions: true });
+            var htmlViewer = document.getElementById('htmlViewer');
+            htmlViewer.innerHTML = convertTextAreaToMarkdown({}, markdownTextarea.value, converter);
+
+
+            markdownTextarea.addEventListener('input'
+                , () => {
+                    htmlViewer.innerHTML = convertTextAreaToMarkdown({}, markdownTextarea.value, converter)
+                });
+
+
+            doPost = function (article_name, content) {
+                let formdata = new FormData();
+                formdata.append('article_name', article_name);
+                let ajax = new XMLHttpRequest();
+                ajax.open("POST", '/api/createPostStart', true);
+                ajax.send(formdata);
+                console.log(formdata.get('imageFile'));
+
+                for (let image of imagesAdded) {
+                    console.log('add image');
+                    let formdata = new FormData();
+                    formdata.append('image', image);
+                    ajax = new XMLHttpRequest();
+                    ajax.open("POST", '/api/image', true);
+                    ajax.send(formdata);
+                }
+
+                let images = content.getElementsByTagName('img');
+                console.log(images);
+
+                for (let image of images) {
+                    image.src = image.alt;
+                }
+                console.log(images);
+
+                formdata = new FormData();
+                formdata.append('article_content', content.innerHTML);
+                console.log("markdownTextarea.value: ", markdownTextarea.value);
+                formdata.append('markdown_content', markdownTextarea.value);
+                formdata.append('article_name', article_name);
+                ajax = new XMLHttpRequest();
+                ajax.open("POST", '/api/createPostEnd', true);
+                ajax.send(formdata);
+            }
+
+        }
+
+
+        var convertTextAreaToMarkdown = function (imgMap, markdownText, markdownConverter) {
+            html = markdownConverter.makeHtml(markdownText);
+            return html;
+        };
+    </script>
+    </div>
+</body>
+
+</html>

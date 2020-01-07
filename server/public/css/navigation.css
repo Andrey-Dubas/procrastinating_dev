@@ -1,0 +1,28 @@
+#navigation-ul li {
+    display: inline;
+    list-style-type: none;
+    margin: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    padding-left: 40px;
+    padding-right: 40px;
+    font-size: large;
+    background: whitesmoke;
+}
+
+#navigation-ul a {
+    text-decoration: none;
+}
+
+#navigation-ul a:hover li {
+    background: rgb(177, 171, 171);
+}
+
+#navigation-ul {
+    align-self: center;
+    padding: 20px;
+}
+
+#navigation {
+    text-align: center;
+}
