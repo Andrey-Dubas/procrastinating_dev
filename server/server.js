@@ -9,6 +9,7 @@ const session = require('express-session');
 const csp = require('express-csp-header');
 const mongoose = require('mongoose')
 const MarkdownPreprocess = require("./MarkdownPreprocess")
+const engine = require('ejs-mate');
 
 global.window = {document: {createElementNS: () => {return {}} }};
 global.navigator = {};
@@ -50,6 +51,7 @@ app.use(session({
     secret: "24tegfdfutDFG4754GV"
 }));
 
+app.engine('ejs', engine);
 
 
 let tmpStorage = 'public/tmp_store';
@@ -96,6 +98,22 @@ const UserData = mongoose.model("UserData", UserDataSchema);
 
 app.get('/login', (req, res) => {
     res.render('login.ejs', {role: req.auth ? req.auth.role: undefined});
+})
+
+app.get('/logout', (req, res) => {
+    res.cookie('username', {expires: Date.now()});
+    res.cookie('Session-id', {expires: Date.now()})
+    res.clearCookie('username');
+    res.clearCookie('Session-id');
+    req.session.destroy(function(err){  
+        if(err){  
+            console.log(err);  
+        }  
+        else  
+        {  
+            res.redirect('/');  
+        }  
+    });  
 })
 
 const uuidv1 = require('uuid/v1');
@@ -209,7 +227,6 @@ app.post('/register', async (req, res) => {
         const userData = new UserData(usr);
         await userData.save();
         res.redirect("/login");
-        // res.status(201).send();
     }
     catch(err)
     {
@@ -450,7 +467,8 @@ app.post('/api/createPostStart', (req, res) => {
                     let metadata = JSON.stringify(
                         {
                             articleName: req.body.article_name,
-                            user: req.auth.username
+                            user: req.auth.username,
+                            owner: req.auth.username,
                         }
                     );
                     let writePromise = promisify(f.write.bind(f))(metadata);
@@ -498,7 +516,10 @@ app.post('/api/createPostEnd', (req, res) => {
 })
 
 app.get('/CV', (req, res) => {
-    res.render('CV', {role: req.auth ? req.auth.role: undefined})
+    res.render('CV', {
+        role: req.auth ? req.auth.role: undefined,
+        title: "Andrii Dubas' CV"
+    })
 })
 
 app.get('/CV_pdf', (req, res) => {
@@ -506,12 +527,15 @@ app.get('/CV_pdf', (req, res) => {
 
 })
 
-let port = process.env.PORT || 8002
+let articlesPath = path.join(__dirname, 'public', '_articles')
+
+if (!fs.existsSync(articlesPath))
+{
+    fs.mkdirSync(articlesPath)
+}
 
 module.exports = (configuration) => {
-    // console.log(configuration)
     let dbAddress = configuration.db.address;
-    console.log(dbAddress);
     mongoose.connect(dbAddress, { useNewUrlParser: true,  useUnifiedTopology: true }, (err) =>
         {
             if (configuration.mode === 'test') { 
@@ -520,13 +544,20 @@ module.exports = (configuration) => {
 
             for (let user of configuration.db.predefined_users)
             {
-                // console.log(user);
-                let encrypted_password = bcrypt.hashSync(user.password, 10);
-                let decrypted_password = user.password;
-                user.password = encrypted_password;
+                let encryptedPassword;
+                if (user.decryptedPassword) // for debugging
+                {
+                    encryptedPassword = bcrypt.hashSync(user.decryptedPassword, 10);
+                }
+                else
+                {
+                    encryptedPassword = user.encryptedPassword;
+                }
+                console.log(encryptedPassword);
+
+                user.password = encryptedPassword;
                 user.SessionID = [];
                 user.email = "email@email.com";
-                // console.log(user);
 
                 let dbUser = new UserData(user);
                 dbUser.save({}, (err, product) => {if (err) {console.log('error saving user')}});

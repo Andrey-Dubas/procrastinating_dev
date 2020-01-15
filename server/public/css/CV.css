@@ -1,6 +1,4 @@
-/** { margin: 0; padding: 0; }*/
-/*body { font: 16px Helvetica, Sans-Serif; line-height: 24px; background: url(images/noise.jpg); background-color: #EEE; }*/
-/*.clear { clear: both; }*/
+.clear { clear: both; }
 #page-wrap { width: 800px; margin: 40px auto 60px; }
 #pic { float: right; margin: 60px 0 0 0; }
 #page-wrap h1 { margin: 0 0 16px 0; padding: 0 0 16px 0; font-size: 42px; font-weight: bold; letter-spacing: -2px; border-bottom: 1px solid #999; }

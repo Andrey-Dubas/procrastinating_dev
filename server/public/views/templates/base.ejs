@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link href="/css/register.css" rel="stylesheet" type="text/css">
+        <link href="/css/header.css" rel="stylesheet" type="text/css">
+        <link href="/css/general.css" rel="stylesheet" type="text/css">
+        <link href="/css/navigation.css" rel="stylesheet" type="text/css">
+        <%- block('css').toString() %>
+        <title>
+            <%- block('title').toString() %>
+        </title>
+    </head>
+    <body>
+        <div id="main-container">
+            <%- include('header') %>
+            <%- include('navigation') %>
+
+            <div id="main-content"> 
+                <%- body -%>
+            </div>
+        </div>
+        <%- include('footer') %>
+    </body>
+</html>

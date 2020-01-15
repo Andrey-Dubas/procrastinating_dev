@@ -1,24 +1,9 @@
-
-<!DOCTYPE html>
-<html>    
-    <head>  
-        <link href="/css/register.css" rel="stylesheet" type="text/css">
-        <link href="/css/header.css" rel="stylesheet" type="text/css">
-        <link href="/css/general.css" rel="stylesheet" type="text/css">
-        <link href="/css/navigation.css" rel="stylesheet" type="text/css">
-    </head>
-    <body>
-        <%- include('templates/header') %>
-        <%- include('templates/navigation') %>
-        <ul>
-        <% for (let articleData of articleList) { %>
-            <li> 
-                <a href='/articles/view/<%= articleData.directoryName %>' > <%= articleData.directoryName %> </a>
-                <% if ( username === articleData.owner || role === 'admin') { %>
-                    / <a href='/articles/edit/<%= articleData.directoryName %>' > edit </a>
-                <% } %>
-            </li> 
+<% layout('templates/base') -%>
+<% for (let articleData of articleList) { %>
+    <li> 
+        <a href='/articles/view/<%= articleData.directoryName %>' > <%= articleData.directoryName %> </a>
+        <% if ( username === articleData.owner || role === 'admin') { %>
+            / <a href='/articles/edit/<%= articleData.directoryName %>' > edit </a>
         <% } %>
-        </ul>
-    </body>    
-</html>
+    </li> 
+<% } %>

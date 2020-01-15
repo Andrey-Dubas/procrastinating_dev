@@ -1,9 +1,90 @@
+html, body {
+    background-color: whitesmoke;
+    height:100%;
+    display: flex;
+    flex-direction: column;
+    margin: 0;
+}
 #login-table tr td {
     padding: 7px;
 }
 
-#main-content {
-    width: 50%;
+#main-container
+{
+    min-width: 60%;
+    max-width: 60%;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    flex-grow: 1;
+    margin: 0 auto;
+    border-color: deepskyblue;
+    border-left-style: solid;
+    border-right-style: solid;
+    border-bottom-style: solid;
+    border-left-width: 2%;
+    border-right-width: 2%;
+    border-bottom-width: solid;
+}
+
+#footer {
+    margin-top: 1%;
+    margin-bottom: 1%;
     margin-left: auto;
     margin-right: auto;
 }
+
+#main-content {
+    padding: 60px;
+    margin-left: auto;
+    margin-right: auto;
+    text-indent: 20px;
+}
+
+#main-content p {
+    line-height: 1.5;
+}
+
+#login-table {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/*
+    show article
+*/
+#article-container {
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: white;
+    text-align: left;
+    text-indent: 20px;
+}
+
+img + em {
+    font-style: normal;
+    display: inherit;
+    text-align: center;
+    font-size: 90%;
+}
+
+#article-name {
+    text-align: center;
+}
+
+#article-container img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#article-list {
+    padding: 0;
+    margin: 0;
+    list-style-type: none;
+}
+/*
+
+*/

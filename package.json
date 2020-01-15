@@ -4,12 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "start": "node index.js",
     "devStart": "nodemon --inspect server/index.js",
     "debug": "service mongodb start && nodemon --inspect index.js",
-    "test": "mocha --recursive tests/**.test.js",
-    "pretestX": "cross-env NODE_ENV=test npm run migrate:reset",
-    "migrate:reset": "",
-    "//": "npx sequelize-cli db:migrate:undo:all && npm run migrate"
+    "test": "mocha --recursive tests/**.test.js"
   },
   "author": "",
   "license": "ISC",
@@ -19,6 +17,7 @@
     "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "ejs": "^3.0.1",
+    "ejs-mate": "^3.0.0",
     "express": "^4.17.1",
     "express-csp-header": "^2.3.1",
     "express-form-data": "^2.0.10",
@@ -45,5 +44,8 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
+  },
+  "engines": {
+    "node": "8.x"
   }
 }

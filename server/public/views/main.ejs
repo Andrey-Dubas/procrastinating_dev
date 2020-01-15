@@ -1,27 +1,21 @@
-<!DOCTYPE html>
-<html>
-    <head>
-        <link href="/css/register.css" rel="stylesheet" type="text/css">
-        <link href="/css/header.css" rel="stylesheet" type="text/css">
-        <link href="/css/general.css" rel="stylesheet" type="text/css">
-        <link href="/css/navigation.css" rel="stylesheet" type="text/css">
-    </head>
-    <body>
-        <%- include('templates/header') %>
-        <%- include('templates/navigation') %>
-
-        <div id="main-content"> 
-            Hello and welcome to my personal web site!<br>
-            If you are a programmer, you probably know what procrastination is. WHen I was a student life was easier: the lecturer tells you you have to know that topic till the next lecture.
-            So you come back home, realx a little and start learning. I didn't think of subject in general, I just knew I need to know that particular piece of information and I'll be in safe.
-            The lecturer provides you the roadmap, motivation (you don't want to be kicked out of university, aren't you?). So dedicate all you time to meet tight deadlines, and everything goes
-            smooth. Now I am on myself. There is no time constraints, no fear of get yourself expelled. I just keep on living, and, mind you, I have decent life. <br>
-            Now I am a professional developer with >5 years' experience. I have enough money to satisfy my humble appetite. One might ask "So, what's the problem?". I have certain aspirations,
-            but I guess I am too lazy to get done 1-year goal. It is easier for me to split it in step-by-step tasks. So I decided that making articles and issue them is the right way.comment
-            Firstly, it does let you split the subject into several articles. Secondly, teaching others is the way to be sure you actually learnt something. I make an article public, so that's
-            the strongest motivation to review every bit and piece of information. So that's what the blog about. It is not for you, it is for me. <br>
-            I encourage you to provide any feedback. If you see a mistake, please let me know. I'll try to publish one article per week.
-            Additionally, the whole blog was developed by me. That's also a part of overcoming procrastination. Moreover, English is not my mother tongue, therefeore, a bit of practicing might help my carrier as well. 
-        </div>
-    </body>
-</html>
+<% layout('templates/base') -%>
+<% block('title').append("procrastinating dev") %>
+<p>
+    Hello and welcome to my personal web site!
+</p>
+<p>
+    If you are a programmer, you probably know what procrastination is. WHen I was a student life was easier: the lecturer tells you you have to know that topic till the next lecture.
+So you come back home, realx a little and start learning. I didn't think of subject in general, I just knew I need to know that particular piece of information and I'll be in safe.
+The lecturer provides you the roadmap, motivation (you don't want to be kicked out of university, aren't you?). So dedicate all you time to meet tight deadlines, and everything goes
+smooth. Now I am on myself. There is no time constraints, no fear of get yourself expelled. I just keep on living, and, mind you, I have decent life.
+</p>
+<p>
+    Now I am a professional developer with >5 years' experience. I have enough money to satisfy my humble appetite. One might ask "So, what's the problem?". I have certain aspirations,
+but I guess I am too lazy to get done 1-year goal. It is easier for me to split it in step-by-step tasks. So I decided that making articles and issue them is the right way.comment
+Firstly, it does let you split the subject into several articles. Secondly, teaching others is the way to be sure you actually learnt something. I make an article public, so that's
+the strongest motivation to review every bit and piece of information. So that's what the blog about. It is not for you, it is for me.
+</p>
+<p>
+    I encourage you to provide any feedback. If you see a mistake, please let me know. I'll try to publish one article per week.
+Additionally, the whole blog was developed by me. That's also a part of overcoming procrastination. Moreover, English is not my mother tongue, therefeore, a bit of practicing might help my carrier as well.
+</p>

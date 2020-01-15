@@ -1,28 +1,19 @@
-<!DOCTYPE html>
-<html>
-    <head>  
-        <link href="/css/register.css" rel="stylesheet" type="text/css">
-        <link href="/css/header.css" rel="stylesheet" type="text/css">
-        <link href="/css/general.css" rel="stylesheet" type="text/css">
-        <link href="/css/navigation.css" rel="stylesheet" type="text/css">
-    </head>
-    <body>
-        <%- include('templates/header') %>
-        <%- include('templates/navigation') %>
-        <form action="/login" method="POST">
-            <table id="login-table">
-                <tr>
-                    <td> <label for="username" class="login-label"><b>username: </b></label> </td>
-                    <td> <input type="text" name="username"> </td>
-                </tr>
-                <tr>
-                    <td> <label for="password" class="login-label"><b>password: </b></label> </td>
-                    <td> <input type="text" name="password"> </td>
-                </tr>
-                <tr>
-                    <td><input type="submit" value="login"> </td>
-                </tr>
-            </table>
-        </form>
-    </body>
-</html>
+<% layout('templates/base') -%>
+<% block('title').append("login") %>
+<div id="login-div">
+    <form action="/login" method="POST">
+        <table id="login-table">
+            <tr>
+                <td> <label for="username" class="login-label"><b>username: </b></label> </td>
+                <td> <input type="text" name="username"/> </td>
+            </tr>
+            <tr>
+                <td> <label for="password" class="login-label"><b>password: </b></label> </td>
+                <td> <input type="password" name="password"/> </td>
+            </tr>
+            <tr>
+                <td><input type="submit" value="login"/> </td>
+            </tr>
+        </table>
+    </form>
+</div>

@@ -5,6 +5,7 @@
         <a href="/CV"> <li>  CV </li> </a>
         <% if (typeof role !== 'undefined' && role === 'admin') {%>
             <a href="/createPost"> <li> create new post </li> </a>
+            <a href="/logout"> <li> logout </li> </a>
         <% }
         if (typeof role === 'undefined') {%>
             <a href="/login"> <li> login </li> </a>

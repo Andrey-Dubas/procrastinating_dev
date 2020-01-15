@@ -6,7 +6,7 @@ const {app, mongoose} = require('./server/server')(
                 
                 {
                     username: 'admin',
-                    password: 'password',
+                    encryptedPassword: '$2b$10$P06V61cbJDisNKizTM.yR.HFuvyg/1dX1yJtg.JRW4F40o5SosmQu',
                     role: 'admin'
                 }
                 
